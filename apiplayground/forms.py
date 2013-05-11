@@ -21,9 +21,23 @@ TYPE_WIDGET_MAPPING = {
     "string": forms.TextInput,
     "boolean": forms.CheckboxInput,
     "select": forms.Select,
-    "integer": forms.IntegerField
+    "integer": forms.IntegerField,
 }
 
+def build_auth_header_form(parameters):
+    """
+    Builds a form with given parameters as dynamically.
+    """
+    form_fields = SortedDict()
+    for parameter in parameters:
+        parameter_name = parameter.get("name")
+
+        form_fields[parameter_name] = forms.CharField(
+            label=parameter_name,widget=forms.TextInput(attrs={
+                "data-auth": "test",
+            }))
+
+    return type("DataParameterForm", (forms.Form,), form_fields)
 
 def build_data_form(parameters):
     """
@@ -37,7 +51,6 @@ def build_data_form(parameters):
         is_required = parameter.get("is_required", False)
         default = parameter.get("default", None)
         form_widget = TYPE_WIDGET_MAPPING.get(parameter_type)
-
         assert "name" in parameter, "Parameter name is required"
         assert form_widget is not None, "Wrong field type."
         assert isinstance(choices, (list, tuple)), "Wrong choice type."
@@ -76,3 +89,4 @@ def build_url_form(url):
                 }))
 
     return type("URLParameterForm", (forms.Form,), form_fields)
+

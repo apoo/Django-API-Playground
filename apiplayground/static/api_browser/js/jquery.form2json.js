@@ -6,7 +6,7 @@
     $.fn.form2json = function(_options) {
         var options = $.extend({
             "include": "select, input, textarea",
-            "exclude": "input[type='button'], input[type='submit'], [data-token]",
+            "exclude": "input[type='button'], input[type='submit'], [data-token] ,[data-auth]",
             "excludeChildren": "option[value='']:selected"
         }, _options);
 

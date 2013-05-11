@@ -1,5 +1,5 @@
 from django import template
-from apiplayground.forms import build_url_form, build_data_form
+from apiplayground.forms import build_url_form, build_data_form,build_auth_header_form
 
 register = template.Library()
 
@@ -17,10 +17,12 @@ def get_global_forms(schema):
 def get_endpoint_forms(endpoint):
     url_parameter_form = build_url_form(endpoint.get("url", ""))
     data_parameter_form = build_data_form(endpoint.get("parameters", []))
+    data_parameter_auth_header = build_auth_header_form(endpoint.get("headers", []))
 
     return {
         "url_parameter_form": url_parameter_form,
-        "data_parameter_form": data_parameter_form
+        "data_parameter_form": data_parameter_form,
+        "data_parameter_auth_header": data_parameter_auth_header
     }
 
 

@@ -11,7 +11,7 @@ var APIBrowser = $.Class.extend({
 
         // Global elements
         global_inputs : "#global-form input[type='text'], #global-form input[type='checkbox'], #global-form textarea, #global-form select",
- 
+
         // API Resources
         endpoint_form : ".endpoint form",
         endpoint_anchor: ".endpoint a",
@@ -22,6 +22,7 @@ var APIBrowser = $.Class.extend({
         response_headers: ".response-headers",
         response_body: ".response-body",
         url_parameters: ".url-parameters input",
+        auth_header_parameters: ".auth-header-paramaters input",
 
         // API Feedback
         feedback_form: "#submit-feedback form",
@@ -37,6 +38,7 @@ var APIBrowser = $.Class.extend({
         this.make_expandable(this.selectors.endpoint_anchor, this.selectors.try_it, this.SLIDE_DURATION);
         this.make_expandable(this.selectors.feedback_show_button, this.selectors.feedback_form, this.SLIDE_DURATION);
         this.fill_url_parameters(this.selectors.url_parameters, this.selectors.endpoint_form);
+        this.fill_auth_headers(this.selectors.auth_header_parameters, this.selectors.endpoint_form);
     },
 
     load_rest_form: function () {
@@ -92,8 +94,14 @@ var APIBrowser = $.Class.extend({
                 rendered_url = rendered_url.replace($(this).data("token"), $(this).val());
             });
 
-            form.attr("action", rendered_url)
-        })
+            form.attr("action", rendered_url);
+        });
+    },
+
+    fill_auth_headers: function(auth_header_parameters,form_selector){
+        $(auth_header_parameters).change(function (){
+            var form = $(this).parents(form_selector);
+        });
     },
 
     load_feedback_form: function () {

@@ -19,10 +19,11 @@
             "complete": function () {}
         }, _options);
 
-        var build_request_headers = function (method, url, data, content_type) {
+        var build_request_headers = function (method, url, data,auth_header_data,content_type) {
             var result = [];
             result.push(method + " " + url); // method and url.
             result.push("Content-Type: " + content_type +"; charset=utf-8"); // content type
+            result.push("Authorization: apikey " + auth_header_data.email + ":" + auth_header_data.access_token); // Authorizaion header
             if (!$.isEmptyObject(data)) {
                 result.push(""); // blank line
                 result.push(JSON.stringify(data)); // body
@@ -34,6 +35,9 @@
             $(this).submit(function () {
                 var form = $(this);
 
+                auth_header = form.find($(".auth-header-paramaters"));
+
+
                 // firing presubmit event
                 options.presubmit.call(this, form);
 
@@ -43,7 +47,7 @@
                 var content_type = 'application/json';
 
                 // firing submit event
-                options.submit.call(this, form, build_request_headers(method, url, data,
+                options.submit.call(this, form, build_request_headers(method, url, data,auth_header_data,
                                                                 content_type));
 
                 var ajax_parameters = {
@@ -51,6 +55,9 @@
                     type: method,
                     data: JSON.stringify(data),
                     contentType: content_type,
+                    beforeSend: function(xhr,settings){
+                        xhr.setRequestHeader("Authorization"," apikey " + auth_header_data.email + ":" + auth_header_data.access_token); // Authorizaion header
+                    },
                     dataType: 'json',
                     processData: false
                 };

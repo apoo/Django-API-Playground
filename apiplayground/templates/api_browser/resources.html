@@ -41,6 +41,10 @@
                         <form action="{{ endpoint.url }}" data-endpoint-url="{{ endpoint.url }}" method="{{ endpoint.method|upper }}">
                             {% spaceless %}
                                 {% get_endpoint_forms endpoint as forms %}
+                                    <fieldset class="auth-header-paramaters">
+                                        <legend>Auth Headers</legend>
+                                        {{ forms.data_parameter_auth_header.as_p }}
+                                    </fieldset>
                                 {% if forms.url_parameter_form.fields %}
                                     <fieldset class="url-parameters">
                                         <legend>URL Parameters</legend>
